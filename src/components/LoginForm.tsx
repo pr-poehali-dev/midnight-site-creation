@@ -10,8 +10,10 @@ import Icon from "@/components/ui/icon";
 import { toast } from "sonner";
 
 const loginSchema = z.object({
-  email: z.string().email("Введите корректный email"),
-  password: z.string().min(1, "Введите пароль"),
+  steamUsername: z
+    .string()
+    .min(3, "Имя пользователя должно содержать минимум 3 символа"),
+  steamPassword: z.string().min(1, "Введите пароль"),
 });
 
 type LoginFormData = z.infer<typeof loginSchema>;
@@ -30,40 +32,41 @@ const LoginForm = () => {
   const onSubmit = async (data: LoginFormData) => {
     setIsLoading(true);
 
-    // Simulate API call
+    // Simulate Steam login verification
     setTimeout(() => {
       setIsLoading(false);
-      toast.success("Вход выполнен успешно!");
+      toast.success("Вход через Steam выполнен успешно!");
+      window.location.href = "/dashboard";
     }, 2000);
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       <div className="space-y-2">
-        <Label htmlFor="email">Email</Label>
+        <Label htmlFor="steamUsername">Имя пользователя Steam</Label>
         <Input
-          id="email"
-          type="email"
-          placeholder="Введите ваш email"
-          {...register("email")}
+          id="steamUsername"
+          type="text"
+          placeholder="Введите имя пользователя Steam"
+          {...register("steamUsername")}
           className="h-12"
         />
-        {errors.email && (
-          <p className="text-red-500 text-sm">{errors.email.message}</p>
+        {errors.steamUsername && (
+          <p className="text-red-500 text-sm">{errors.steamUsername.message}</p>
         )}
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="password">Пароль</Label>
+        <Label htmlFor="steamPassword">Пароль Steam</Label>
         <Input
-          id="password"
+          id="steamPassword"
           type="password"
-          placeholder="Введите пароль"
-          {...register("password")}
+          placeholder="Введите пароль Steam"
+          {...register("steamPassword")}
           className="h-12"
         />
-        {errors.password && (
-          <p className="text-red-500 text-sm">{errors.password.message}</p>
+        {errors.steamPassword && (
+          <p className="text-red-500 text-sm">{errors.steamPassword.message}</p>
         )}
       </div>
 

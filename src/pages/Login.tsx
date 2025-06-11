@@ -3,7 +3,7 @@ import LoginForm from "@/components/LoginForm";
 
 const Login = () => {
   return (
-    <AuthLayout title="Вход" subtitle="Добро пожаловать обратно!">
+    <AuthLayout title="Вход Steam" subtitle="Войдите с данными Steam аккаунта">
       <LoginForm />
     </AuthLayout>
   );
