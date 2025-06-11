@@ -1,121 +1,48 @@
 import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Link } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 import { toast } from "sonner";
 
-const registerSchema = z
-  .object({
-    name: z.string().min(2, "Имя должно содержать минимум 2 символа"),
-    email: z.string().email("Введите корректный email"),
-    password: z.string().min(6, "Пароль должен содержать минимум 6 символов"),
-    confirmPassword: z.string(),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Пароли не совпадают",
-    path: ["confirmPassword"],
-  });
-
-type RegisterFormData = z.infer<typeof registerSchema>;
-
 const RegisterForm = () => {
   const [isLoading, setIsLoading] = useState(false);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<RegisterFormData>({
-    resolver: zodResolver(registerSchema),
-  });
-
-  const onSubmit = async (data: RegisterFormData) => {
+  const handleSteamLogin = () => {
     setIsLoading(true);
 
-    // Simulate API call
+    // Simulate Steam OAuth redirect
+    toast.success("Перенаправление на Steam...");
+
+    // In real implementation, this would redirect to Steam OpenID
     setTimeout(() => {
-      setIsLoading(false);
-      toast.success(
-        "Регистрация прошла успешно! Проверьте email для подтверждения.",
-      );
-    }, 2000);
+      // Simulate successful Steam auth and redirect to dashboard
+      window.location.href = "/dashboard";
+    }, 1500);
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-      <div className="space-y-2">
-        <Label htmlFor="name">Имя</Label>
-        <Input
-          id="name"
-          placeholder="Введите ваше имя"
-          {...register("name")}
-          className="h-12"
-        />
-        {errors.name && (
-          <p className="text-red-500 text-sm">{errors.name.message}</p>
-        )}
-      </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="email">Email</Label>
-        <Input
-          id="email"
-          type="email"
-          placeholder="Введите ваш email"
-          {...register("email")}
-          className="h-12"
-        />
-        {errors.email && (
-          <p className="text-red-500 text-sm">{errors.email.message}</p>
-        )}
-      </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="password">Пароль</Label>
-        <Input
-          id="password"
-          type="password"
-          placeholder="Введите пароль"
-          {...register("password")}
-          className="h-12"
-        />
-        {errors.password && (
-          <p className="text-red-500 text-sm">{errors.password.message}</p>
-        )}
-      </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="confirmPassword">Подтвердите пароль</Label>
-        <Input
-          id="confirmPassword"
-          type="password"
-          placeholder="Повторите пароль"
-          {...register("confirmPassword")}
-          className="h-12"
-        />
-        {errors.confirmPassword && (
-          <p className="text-red-500 text-sm">
-            {errors.confirmPassword.message}
-          </p>
-        )}
+    <div className="space-y-6">
+      <div className="text-center space-y-2">
+        <Icon name="Steam" className="mx-auto h-16 w-16 text-blue-600" />
+        <h3 className="text-lg font-semibold text-gray-800">
+          Войти через Steam
+        </h3>
+        <p className="text-gray-600">
+          Используйте ваш Steam аккаунт для быстрой регистрации
+        </p>
       </div>
 
       <Button
-        type="submit"
-        className="w-full h-12 text-lg font-semibold"
+        onClick={handleSteamLogin}
+        className="w-full h-12 text-lg font-semibold bg-blue-600 hover:bg-blue-700"
         disabled={isLoading}
       >
         {isLoading ? (
           <Icon name="Loader2" className="animate-spin mr-2" />
         ) : (
-          <Icon name="UserPlus" className="mr-2" />
+          <Icon name="Gamepad2" className="mr-2" />
         )}
-        {isLoading ? "Регистрация..." : "Зарегистрироваться"}
+        {isLoading ? "Подключение..." : "Войти через Steam"}
       </Button>
 
       <div className="text-center">
@@ -129,7 +56,7 @@ const RegisterForm = () => {
           </Link>
         </p>
       </div>
-    </form>
+    </div>
   );
 };
 

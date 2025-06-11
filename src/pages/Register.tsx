@@ -3,7 +3,10 @@ import RegisterForm from "@/components/RegisterForm";
 
 const Register = () => {
   return (
-    <AuthLayout title="Регистрация" subtitle="Создайте аккаунт, чтобы начать">
+    <AuthLayout
+      title="Регистрация через Steam"
+      subtitle="Подключите ваш Steam аккаунт"
+    >
       <RegisterForm />
     </AuthLayout>
   );
